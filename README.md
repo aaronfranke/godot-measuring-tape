@@ -1,6 +1,10 @@
 # Godot Measuring Tape
 
-A tool for measuring things in Godot, using the positions of the measurement node and its parent node.
+A tool for measuring things in Godot, using the positions
+of the measurement node and its parent node.
+
+Check out this tool on the Godot Asset Library:
+https://godotengine.org/asset-library/asset/818
 
 These measurement types are supported:
 
