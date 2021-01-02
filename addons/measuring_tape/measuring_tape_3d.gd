@@ -4,7 +4,7 @@ extends Position3D
 
 export(Units.MeasureType) var measure = Units.MeasureType.LENGTH
 export(Units.UnitType) var unit = Units.UnitType.METER
-export(int) var decimal_count := 2 setget set_decimal_count
+export(int, 0, 10) var decimal_count := 2 setget set_decimal_count
 
 var _editor_camera: Camera
 var _editor_viewport: Viewport
@@ -18,11 +18,15 @@ func _ready():
 	if not Engine.is_editor_hint():
 		queue_free()
 		return
+	if not _parent is Spatial:
+		printerr("Failed to create MeasuringTape3D. The parent of a MeasuringTape3D must be Spatial-derived.")
+		queue_free()
+		return
 	_editor_viewport = find_viewport(get_node("/root/EditorNode"), 0)
 	_editor_camera = _editor_viewport.get_child(0)
 	# Set up the line.
 	_geometry = ImmediateGeometry.new()
-	_parent.add_child(_geometry)
+	_parent.call_deferred("add_child", _geometry)
 	# Set up the Label.
 	_label = Label.new()
 	_label.rect_min_size = Vector2(400, 30)

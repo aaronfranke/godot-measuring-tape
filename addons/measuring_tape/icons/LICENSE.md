@@ -1,3 +1,4 @@
+"measuring_tape_2d.svg" and "measuring_tape_3d.svg" are derived from
 "YSort.svg" from Godot Engine, which is under the MIT license.
 
 Copyright (c) 2007-2021 Juan Linietsky, Ariel Manzur.

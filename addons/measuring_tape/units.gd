@@ -9,6 +9,12 @@ enum MeasureType {
 	SURFACE_AREA = 4,
 }
 
+enum MeasureType2D {
+	LENGTH = 0,
+	AREA = 1,
+	PERIMETER = 2,
+}
+
 enum UnitType {
 	METER = 0,
 	MILLIMETER = 1,

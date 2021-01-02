@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Position2D",
+"class": "MeasuringTape2D",
+"language": "GDScript",
+"path": "res://addons/measuring_tape/measuring_tape_2d.gd"
+}, {
 "base": "Position3D",
 "class": "MeasuringTape3D",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://addons/measuring_tape/units.gd"
 } ]
 _global_script_class_icons={
+"MeasuringTape2D": "res://addons/measuring_tape/icons/measuring_tape_2d.svg",
 "MeasuringTape3D": "res://addons/measuring_tape/icons/measuring_tape_3d.svg",
 "Units": ""
 }
@@ -39,3 +45,4 @@ enabled=PoolStringArray( "measuring_tape" )
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
+environment/default_environment="res://default_env.tres"
