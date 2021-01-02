@@ -1,0 +1,41 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Position3D",
+"class": "MeasuringTape3D",
+"language": "GDScript",
+"path": "res://addons/measuring_tape/measuring_tape_3d.gd"
+}, {
+"base": "Resource",
+"class": "Units",
+"language": "GDScript",
+"path": "res://addons/measuring_tape/units.gd"
+} ]
+_global_script_class_icons={
+"MeasuringTape3D": "res://addons/measuring_tape/icons/measuring_tape_3d.svg",
+"Units": ""
+}
+
+[application]
+
+config/name="MeasuringTape"
+run/main_scene="res://test.tscn"
+config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "measuring_tape" )
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
+vram_compression/import_etc2=false

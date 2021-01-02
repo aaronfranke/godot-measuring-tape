@@ -1,2 +1,3 @@
-# godot-measuring-tape
-Godot Measuring Tape
+# Godot Measuring Tape
+
+A tool for measuring things in Godot.
