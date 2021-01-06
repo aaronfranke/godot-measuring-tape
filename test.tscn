@@ -9,8 +9,18 @@
 
 [node name="MeasuringTape3D" type="Position3D" parent="Test3D"]
 script = ExtResource( 1 )
+measure = 0
+unit = 0
+decimal_count = 2
 
 [node name="Test2D" type="Node2D" parent="."]
 
 [node name="MeasuringTape2D" type="Position2D" parent="Test2D"]
 script = ExtResource( 2 )
+measure = 0
+unit = 0
+decimal_count = 2
+color = Color( 0.15, 0.45, 0.5, 1 )
+line_width_pixels = 4.0
+pixels_per_meter = 100.0
+pixels_per_inch = 2.54
