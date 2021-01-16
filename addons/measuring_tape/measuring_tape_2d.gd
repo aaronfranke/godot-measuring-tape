@@ -2,8 +2,8 @@ tool
 class_name MeasuringTape2D, "icons/measuring_tape_2d.svg"
 extends Position2D
 
-export(Units.MeasureType2D) var measure = Units.MeasureType2D.LENGTH
-export(Units.UnitType) var unit = Units.UnitType.METER
+export(Units.MeasureType2D) var measure = Units.MeasureType2D.LENGTH setget set_measure
+export(Units.UnitType) var unit = Units.UnitType.METER setget set_unit
 export(int, 0, 10) var decimal_count := 2 setget set_decimal_count
 export(Color) var color := Color(0.15, 0.45, 0.5)
 export(float) var line_width_pixels := 4.0
@@ -87,6 +87,28 @@ func _exit_tree():
 		_label.queue_free()
 	if _sprite:
 		_sprite.queue_free()
+
+
+func set_measure(value: int):
+	measure = value
+	if (unit == Units.UnitType.HECTARE or unit == Units.UnitType.ACRE) and \
+			value != Units.MeasureType2D.AREA:
+		unit = Units.UnitType.METER
+		property_list_changed_notify()
+
+
+func set_unit(value: int):
+	if (value == Units.UnitType.HECTARE or value == Units.UnitType.ACRE) and \
+			value != Units.MeasureType2D.AREA:
+		measure = Units.MeasureType2D.AREA
+		property_list_changed_notify()
+	elif value == Units.UnitType.LITER or value == Units.UnitType.GALLON:
+		printerr("You can't measure volume in 2D!")
+		measure = Units.MeasureType2D.LENGTH
+		unit = Units.UnitType.METER
+		property_list_changed_notify()
+		return
+	unit = value
 
 
 func set_decimal_count(value: int):

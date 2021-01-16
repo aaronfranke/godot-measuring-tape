@@ -23,10 +23,15 @@ These unit types are supported:
 * Hammer units (the Source engine's units).
 * Inches
 * Feet
+* Feet and inches
 * Yards
 * Miles
 * Light seconds
 * Light nanoseconds
+* Hectares (area)
+* Acres (area)
+* Liters (volume)
+* Gallons (volume)
 
 ![3d-1](screenshots/3d-1.png)
 ![3d-2](screenshots/3d-2.png)

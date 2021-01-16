@@ -2,8 +2,8 @@ tool
 class_name MeasuringTape3D, "icons/measuring_tape_3d.svg"
 extends Position3D
 
-export(Units.MeasureType) var measure = Units.MeasureType.LENGTH
-export(Units.UnitType) var unit = Units.UnitType.METER
+export(Units.MeasureType) var measure = Units.MeasureType.LENGTH setget set_measure
+export(Units.UnitType) var unit = Units.UnitType.METER setget set_unit
 export(int, 0, 10) var decimal_count := 2 setget set_decimal_count
 
 var _editor_camera: Camera
@@ -152,6 +152,30 @@ func _exit_tree():
 		_label.queue_free()
 	if _sprite:
 		_sprite.queue_free()
+
+
+func set_measure(value: int):
+	measure = value
+	if (unit == Units.UnitType.HECTARE or unit == Units.UnitType.ACRE) and \
+			value != Units.MeasureType.AREA and value != Units.MeasureType.SURFACE_AREA:
+		unit = Units.UnitType.METER
+		property_list_changed_notify()
+	elif (unit == Units.UnitType.LITER or unit == Units.UnitType.GALLON) and \
+			value != Units.MeasureType.VOLUME:
+		unit = Units.UnitType.METER
+		property_list_changed_notify()
+
+
+func set_unit(value: int):
+	unit = value
+	if (value == Units.UnitType.HECTARE or value == Units.UnitType.ACRE) and \
+			measure != Units.MeasureType.AREA and measure != Units.MeasureType.SURFACE_AREA:
+		measure = Units.MeasureType.AREA
+		property_list_changed_notify()
+	elif (value == Units.UnitType.LITER or value == Units.UnitType.GALLON) and \
+			measure != Units.MeasureType.VOLUME:
+		measure = Units.MeasureType.VOLUME
+		property_list_changed_notify()
 
 
 func set_decimal_count(value: int):
