@@ -1,22 +1,22 @@
-tool
-class_name MeasuringTape2D, "icons/measuring_tape_2d.svg"
-extends Position2D
+@tool
+@icon("icons/measuring_tape_2d.svg")
+class_name MeasuringTape2D extends Marker2D
 
-export(Units.MeasureType2D) var measure = Units.MeasureType2D.LENGTH setget set_measure
-export(Units.UnitType) var unit = Units.UnitType.METER setget set_unit
-export(int, 0, 10) var decimal_count := 2 setget set_decimal_count
-export(Color) var color := Color(0.15, 0.45, 0.5)
-export(float) var line_width_pixels := 4.0
+@export var measure = Units.MeasureType2D.LENGTH: set = set_measure
+@export var unit = Units.UnitType.METER: set = set_unit
+@export var decimal_count := 2: set = set_decimal_count
+@export var color := Color(0.15, 0.45, 0.5)
+@export var line_width_pixels := 4.0
 # If you are measuring a game world, you may prefer to use pixels per meter.
-export(float) var pixels_per_meter = 100 setget set_pixels_per_meter
+@export var pixels_per_meter: float = 100: set = set_pixels_per_meter
 # If you are measuring UI elements, you may prefer using PPI (DPI).
-export(float) var pixels_per_inch = 2.54 setget set_pixels_per_inch
+@export var pixels_per_inch: float = 2.54: set = set_pixels_per_inch
 
-var _editor_viewport: Viewport
+var _editor_viewport: SubViewport
 var _line: Line2D
 var _label: Label
-var _sprite: Sprite
-onready var _parent = get_parent()
+var _sprite: Sprite2D
+@onready var _parent = get_parent()
 
 
 func _ready():
@@ -29,30 +29,16 @@ func _ready():
 		return
 	if _parent is Control:
 		set_pixels_per_inch(96)
-	_editor_viewport = find_viewport(get_node("/root/EditorNode"), 0)
+	_editor_viewport = EditorInterface.get_editor_viewport_2d()
 	# Set up the line.
 	_line = Line2D.new()
 	_parent.call_deferred("add_child", _line)
 	# Set up the Label.
 	_label = Label.new()
-	_label.rect_min_size = Vector2(400, 30)
-	_label.align = Label.ALIGN_CENTER
+	_label.custom_minimum_size = Vector2(400, 30)
+	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_editor_viewport.add_child(_label)
-
-
-# TODO: This is a really janky way to get the editor viewport.
-# Waiting for https://github.com/godotengine/godot-proposals/issues/1302
-func find_viewport(node: Node, recursive_level):
-	if node.get_class() == "CanvasItemEditor":
-		return node.get_child(1).get_child(0).get_child(0).get_child(0).get_child(0)
-	else:
-		recursive_level += 1
-		if recursive_level > 15:
-			return null
-		for child in node.get_children():
-			var result = find_viewport(child, recursive_level)
-			if result != null:
-				return result
 
 
 func _process(_delta):
@@ -65,19 +51,19 @@ func _process(_delta):
 	var abs_meters: Vector2 = meters.abs()
 	var amount: float
 	if measure == Units.MeasureType.LENGTH:
-		_line.points = PoolVector2Array([Vector2.ZERO, position])
+		_line.points = PackedVector2Array([Vector2.ZERO, position])
 		amount = meters.length()
 	if measure == Units.MeasureType.AREA or measure == Units.MeasureType.PERIMETER:
 		# These vertices generate a square.
-		_line.points = PoolVector2Array([Vector2.ZERO, Vector2(position.x, 0),
+		_line.points = PackedVector2Array([Vector2.ZERO, Vector2(position.x, 0),
 				position, Vector2(0, position.y), Vector2.ZERO])
 		if measure == Units.MeasureType2D.AREA:
 			amount = abs_meters.x * abs_meters.y
 		else: # measure == Units.MeasureType2D.PERIMETER:
 			amount = (abs_meters.x + abs_meters.y) * 2
-	var center = _parent.get_global_transform().xform(position / 2)
+	var center = _parent.get_global_transform() * (position / 2)
 	_label.text = Units.convert_to_unit_str(amount, unit, measure, decimal_count)
-	_label.rect_position = center - (_label.rect_min_size / 2)
+	_label.position = center - (_label.custom_minimum_size / 2)
 
 
 func _exit_tree():
@@ -94,19 +80,19 @@ func set_measure(value: int):
 	if (unit == Units.UnitType.HECTARE or unit == Units.UnitType.ACRE) and \
 			value != Units.MeasureType2D.AREA:
 		unit = Units.UnitType.METER
-		property_list_changed_notify()
+		notify_property_list_changed()
 
 
 func set_unit(value: int):
 	if (value == Units.UnitType.HECTARE or value == Units.UnitType.ACRE) and \
 			value != Units.MeasureType2D.AREA:
 		measure = Units.MeasureType2D.AREA
-		property_list_changed_notify()
+		notify_property_list_changed()
 	elif value == Units.UnitType.LITER or value == Units.UnitType.GALLON:
 		printerr("You can't measure volume in 2D!")
 		measure = Units.MeasureType2D.LENGTH
 		unit = Units.UnitType.METER
-		property_list_changed_notify()
+		notify_property_list_changed()
 		return
 	unit = value
 

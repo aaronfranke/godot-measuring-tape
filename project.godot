@@ -6,43 +6,17 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "Position2D",
-"class": "MeasuringTape2D",
-"language": "GDScript",
-"path": "res://addons/measuring_tape/measuring_tape_2d.gd"
-}, {
-"base": "Position3D",
-"class": "MeasuringTape3D",
-"language": "GDScript",
-"path": "res://addons/measuring_tape/measuring_tape_3d.gd"
-}, {
-"base": "Resource",
-"class": "Units",
-"language": "GDScript",
-"path": "res://addons/measuring_tape/units.gd"
-} ]
-_global_script_class_icons={
-"MeasuringTape2D": "res://addons/measuring_tape/icons/measuring_tape_2d.svg",
-"MeasuringTape3D": "res://addons/measuring_tape/icons/measuring_tape_3d.svg",
-"Units": ""
-}
+config_version=5
 
 [application]
 
 config/name="MeasuringTape"
 run/main_scene="res://test.tscn"
+config/features=PackedStringArray("4.3")
 config/icon="res://icon.png"
-
-[editor_plugins]
-
-enabled=PoolStringArray( "measuring_tape" )
 
 [rendering]
 
+environment/defaults/default_environment="res://default_env.tres"
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
-vram_compression/import_etc2=false
-environment/default_environment="res://default_env.tres"
